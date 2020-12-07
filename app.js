@@ -10,6 +10,49 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+//empty array that the populate with the employee information
+const finalTeam = []
+let manager
+let projectName
+
+function employeeInfo() {
+    inquirer.prompt([
+    {   
+        name: 'empRole',
+        type: 'checkbox',
+        messege: 'Are you an intern or engineer?',
+        choices: ['engineer', 'intern']
+    },
+    {
+        name: 'empName',
+        type: 'input',
+        messege: 'What is your name?'
+    },
+    {
+        name: 'empId',
+        type: 'input',
+        messege: 'What is your employee ID?'
+    },
+    {
+        name: 'empEmail',
+        type: 'input',
+        messege: 'What is your email address?'
+    },
+    {
+        name: 'school',
+        type: 'input',
+        messege: 'What school did you go to?',
+        when: (userInput) => userInput.empRole === "intern"
+    },
+    {
+        name: 'empGithub',
+        type: 'input',
+        messege: 'What is your github link?',
+        when: (userInput) => userInput.empRole === "engineer"
+    }
+    ])
+}
+
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
