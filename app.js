@@ -15,43 +15,45 @@ const finalTeam = []
 let manager
 let projectName
 
-function employeeInfo() {
+// prompt function that gathers information on whether the employee is an intern or and engineer
+// function employeeInfo() {
     inquirer.prompt([
     {   
         name: 'empRole',
         type: 'checkbox',
-        messege: 'Are you an intern or engineer?',
-        choices: ['engineer', 'intern']
+        message: 'Are you an intern or engineer?',
+        choices: ['engineer', 'intern'],
     },
     {
         name: 'empName',
         type: 'input',
-        messege: 'What is your name?'
+        message: 'What is your name?'
     },
     {
         name: 'empId',
         type: 'input',
-        messege: 'What is your employee ID?'
+        message: 'What is your employee ID?'
     },
     {
         name: 'empEmail',
         type: 'input',
-        messege: 'What is your email address?'
+        message: 'What is your email address?'
     },
     {
         name: 'school',
         type: 'input',
-        messege: 'What school did you go to?',
-        when: (userInput) => userInput.empRole === "intern"
+        message: 'What school did you go to?',
+        when: (userInput) => userInput.role === "Intern"
     },
     {
         name: 'empGithub',
         type: 'input',
-        messege: 'What is your github link?',
-        when: (userInput) => userInput.empRole === "engineer"
+        message: 'What is your github link?',
+        when: (userInput) => userInput.role === "Engineer"
     }
     ])
-}
+// }
+
 
 
 // Write code to use inquirer to gather information about the development team members,
