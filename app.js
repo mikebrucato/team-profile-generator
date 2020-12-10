@@ -16,7 +16,45 @@ let manager
 let projectName
 
 // prompt function that gathers information on whether the employee is an intern or and engineer
-// function employeeInfo() {
+
+function managerInfo() {
+    inquirer.prompt ([
+    {
+        name: 'projectName',
+        type: 'input',
+        message: 'What is the name of your project?'
+    },
+    {
+        name: 'managerName',
+        type: 'input',
+        message: 'What is your name?'
+    },
+    {
+        name: 'managerEmail',
+        type: 'input',
+        message: 'What is your email address?'
+    },
+    {
+        name: 'managerId',
+        type: 'input',
+        message: 'What is your manager ID?'
+    },
+    {
+        name: 'officeNum',
+        type: 'input',
+        message: 'What is your office number?'
+    }
+    ])
+    .then(managerResponse => {
+        manager = new Manager(managerResponse.managerName, managerResponse.managerEmail, managerResponse.managerId, manageresponse.officeNum)
+        projectName = managerResponse.projectName
+        employeeInfo()
+    })
+
+}
+
+
+function employeeInfo() {
     inquirer.prompt([
     {   
         name: 'empRole',
@@ -52,7 +90,7 @@ let projectName
         when: (userInput) => userInput.role === "Engineer"
     }
     ])
-// }
+}
 
 
 
