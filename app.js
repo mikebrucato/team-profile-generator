@@ -9,20 +9,23 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const { DH_CHECK_P_NOT_SAFE_PRIME } = require("constants");
 
 //empty array that the populate with the employee information
 const finalTeam = []
 let manager
-let projectName
+let teamName
 
 // prompt function that gathers information on whether the employee is an intern or and engineer
+
+managerInfo()
 
 function managerInfo() {
     inquirer.prompt ([
     {
-        name: 'projectName',
+        name: 'teamName',
         type: 'input',
-        message: 'What is the name of your project?'
+        message: 'What is the name of your team?'
     },
     {
         name: 'managerName',
@@ -45,15 +48,15 @@ function managerInfo() {
         message: 'What is your office number?'
     }
     ])
+    // .then that waits for the manager's response to store the manager's information in a new manager variable
     .then(managerResponse => {
-        manager = new Manager(managerResponse.managerName, managerResponse.managerEmail, managerResponse.managerId, manageresponse.officeNum)
-        projectName = managerResponse.projectName
+        manager = new Manager(managerResponse.managerName, managerResponse.managerEmail, managerResponse.managerId, managerResponse.officeNum)
+        teamName = managerResponse.teamName
         employeeInfo()
     })
 
 }
-
-
+// employee prompt that grabs the employee (intern or student's) information
 function employeeInfo() {
     inquirer.prompt([
     {   
@@ -81,15 +84,38 @@ function employeeInfo() {
         name: 'school',
         type: 'input',
         message: 'What school did you go to?',
-        when: (userInput) => userInput.role === "Intern"
+        
     },
     {
         name: 'empGithub',
         type: 'input',
         message: 'What is your github link?',
-        when: (userInput) => userInput.role === "Engineer"
+        
     }
-    ])
+])
+    .then(empResponse =>{
+        if (empResponse.empRole === 'engineer') {
+            const employee = new Engineer(empResponse.empName, empResponse.empId, empResponse.empEmail, empResponse.empGithub)
+            finalTeam.push(employee)
+        } else if (empResponse.empRole === 'intern') {
+            finalTeam.push(new Intern(empResponse.empName, empResponse.empId, empResponse.empEmail, empResponse.school))
+        }
+        
+        console.log(finalTeam)
+        writeToHtml(finalTeam)
+    
+    })
+   
+}
+
+function writeToHtml(finalTeam) {
+    fs.writeFileSync(outputPath, render(finalTeam), function(err){
+        if (err) {
+            console.log(err)
+        }else{
+            console.log('Your team was written sucessfully!')
+        }
+    })
 }
 
 
