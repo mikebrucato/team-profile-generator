@@ -4,19 +4,16 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-
-
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-//empty array that the populate with the employee information
+//empty array that will populate with the employee information
 const finalTeam = []
 const teamIds = []
-//let teamName
 
-// prompt function that gathers information on whether the employee is an intern or and engineer
+// prompt function that gathers information on the manager
 
 managerInfo()
 
@@ -51,7 +48,7 @@ function managerInfo() {
     // .then that waits for the manager's response to store the manager's information in a new manager variable
     .then(managerResponse => {
         manager = new Manager(managerResponse.managerName, managerResponse.managerId, managerResponse.managerEmail, managerResponse.officeNum)
-        console.log(manager)
+        //console.log(manager)
         finalTeam.push(manager)
         teamIds.push(managerResponse.teamName)
 
@@ -64,7 +61,7 @@ function employeeInfo() {
     inquirer.prompt([
     {   
         name: 'empRole',
-        type: 'checkbox',
+        type: 'list',
         message: 'Are you an intern or engineer?',
         choices: ['engineer', 'intern'],
     },
@@ -94,24 +91,40 @@ function employeeInfo() {
         type: 'input',
         message: 'What is your github link?',
         
+    },
+    {
+        name: 'addNewEmp',
+        type: 'list',
+        messege: 'Would you like add a new employee?',
+        choices: ['yes', 'no']
     }
 ])
-    .then(empResponse =>{
+    .then(empResponse => {
         if (empResponse.empRole === 'engineer') {
             const employee = new Engineer(empResponse.empName, empResponse.empId, empResponse.empEmail, empResponse.empGithub)
             finalTeam.push(employee)
             teamIds.push(empResponse.empId)
+            if (empResponse.addNewEmp === 'yes'){
+                employeeInfo()
+            } else {
+                writeToHtml(finalTeam)
+            }
         } else if (empResponse.empRole === 'intern') {
-            finalTeam.push(new Intern(empResponse.empName, empResponse.empId, empResponse.empEmail, empResponse.school))
+            const intern = new Intern (empResponse.empName, empResponse.empId, empResponse.empEmail, empResponse.school)
             finalTeam.push(intern)
             teamIds.push(empResponse.empId)
-        }
+            if (empResponse.addNewEmp === 'yes') {
+                employeeInfo()
+            } else {
+                writeToHtml(finalTeam)
+            
+            }
         
-        console.log(finalTeam)
-        writeToHtml(finalTeam)
-    
-    })
+        
+        }
    
+    })
+
 }
 
 function writeToHtml(finalTeam) {
@@ -119,10 +132,10 @@ function writeToHtml(finalTeam) {
         if (err) {
             console.log(err)
         }else{
-            console.log('Your team was written sucessfully!')
+            console.log('Your team was written successfully!')
         }
     })
-}
+  }
 
 
 
