@@ -12,7 +12,7 @@ INQUIRER
 
 SCREENSHOT
 
-!(assets/screenshot.png)
+<img src="assets/screenshot.png" width="300px" height="200px" alt="screen shot">
 
 
 APPLICATION GITHUB LINK
