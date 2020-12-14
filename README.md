@@ -12,7 +12,7 @@ INQUIRER
 
 SCREENSHOT
 
-!(Application Screenshot)[]
+!(assets/screenshot.png)
 
 
 APPLICATION GITHUB LINK
